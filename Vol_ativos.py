@@ -38,13 +38,39 @@ for year in ['2006', '2010', '2014', '2018']:
     preço_dol.rename(columns={'DÓLAR':year}, inplace=True)
     dol = pd.concat([dol, preço_dol], axis=1).dropna()
 
-###################################### Calaculando volatilidade de cada ano ###########################################################
+########################################### Calaculando volatilidade de cada ano ###########################################################
 
 ##### Volatilidade ibov
-ibov_pct = ibov.pct_change()
+ibov_pct = ibov.pct_change().dropna()
 vol_ibov = pd.DataFrame()
-"""
-for year in ibov:
-    vol_ibov[year] = ibov[year].rolling(21).
-"""
-print(ibov_pct)
+
+for year in ibov_pct:
+    vol_ibov[year+'_ibov'] = ibov_pct[year].rolling(21).std()*(252**0.5)*100
+    vol_ibov.dropna()
+
+##### Volatilidade IMAB 5
+imab_pct = imab.pct_change().dropna()
+vol_imab =pd.DataFrame()
+
+for year in imab_pct:
+    vol_imab[year+'_imab'] = imab_pct[year].rolling(21).std()*(252**0.5)*100
+    vol_imab.dropna()
+
+##### Volatilidade IMAB 5+
+imab_5_pct = imab_5.pct_change().dropna()
+vol_imab_5 = pd.DataFrame()
+
+for year in imab_5_pct:
+    vol_imab_5[year+'_imab5+'] = imab_5_pct[year].rolling(21).std()*(252**0.5)*100
+    vol_imab_5.dropna()
+
+##### Volatilidade Dólar
+dol_pct = dol.pct_change().dropna()
+vol_dol = pd.DataFrame()
+
+for year in dol_pct:
+    vol_dol[year+'_dol'] = dol_pct[year].rolling(21).std()*(252**0.5)*100
+    vol_dol.dropna()
+
+vol_all = pd.concat([vol_ibov, vol_imab, vol_imab_5, vol_dol], axis=1).dropna()
+#vol_all.to_excel('Volatilidade_ativos.xlsx')
