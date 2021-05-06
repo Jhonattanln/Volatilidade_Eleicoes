@@ -1,10 +1,11 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
 ########### Importando os dados
 
 df = pd.read_excel('economatica.xlsx', parse_dates=True, index_col=0).dropna()
-print(df.columns)
+
 #### Calculando IBOV
 ibov = pd.DataFrame()
 
@@ -37,3 +38,13 @@ for year in ['2006', '2010', '2014', '2018']:
     preço_dol.rename(columns={'DÓLAR':year}, inplace=True)
     dol = pd.concat([dol, preço_dol], axis=1).dropna()
 
+###################################### Calaculando volatilidade de cada ano ###########################################################
+
+##### Volatilidade ibov
+ibov_pct = ibov.pct_change()
+vol_ibov = pd.DataFrame()
+"""
+for year in ibov:
+    vol_ibov[year] = ibov[year].rolling(21).
+"""
+print(ibov_pct)
