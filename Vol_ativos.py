@@ -74,3 +74,6 @@ for year in dol_pct:
 
 vol_all = pd.concat([vol_ibov, vol_imab, vol_imab_5, vol_dol], axis=1).dropna()
 #vol_all.to_excel('Volatilidade_ativos.xlsx')
+plt.style.use('ggplot')
+vol_all.plot()
+plt.show()
